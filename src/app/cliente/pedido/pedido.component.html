@@ -1,0 +1,23 @@
+<div class="pedido-container">
+  <div class="header">
+    <img src="images/seta-voltar.png" alt="seta voltar" (click)="voltarPaginaAnterior()">
+    <img src="images/casa-menu.png" alt="casinha menu"  (click)="voltarParaMenu()">
+  </div>
+  <div class="pedido">
+    Pedido
+  </div>
+  <h2>Seu Pedido</h2>
+  <div *ngFor="let prato of pratos">
+      <h3>{{ prato.nome }}</h3>
+      <p>Preço: {{ prato.preco | currency }}</p>
+  </div>
+
+  <div>
+      <strong>Total: {{ calcularTotal() | currency }}</strong>
+  </div>
+
+  <div class="pedido-botoes">
+    <button class="botao_finalizar" (click)="finalizarPedido()">Finalizar Pedido</button>
+    <button class="botao_cancelar" (click)="cancelarPedido()">Cancelar Pedido</button>
+  </div>
+</div>

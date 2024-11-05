@@ -1,0 +1,51 @@
+<div class="tela">
+  <div class="header">
+    <img src="images/seta-voltar.png" alt="seta voltar" (click)="voltarPaginaAnterior()">
+    <img src="images/casa-menu.png" alt="casinha menu"  (click)="voltarParaMenu()">
+  </div>
+  <div class="botao_produto">
+    <button [class.active]="selectedTab === 'principais'" (click)="selectedTab = 'principais'">Pratos</button>
+    <button [class.active]="selectedTab === 'bebidas'" (click)="selectedTab = 'bebidas'">Bebidas</button>
+    <button [class.active]="selectedTab === 'sobremesas'" (click)="selectedTab = 'sobremesas'">Sobremesas</button>
+  </div>
+
+  <div class="cardapio-container">
+    <!-- Renderização de pratos principais -->
+    <ng-container *ngIf="selectedTab === 'principais'">
+      <div class="prato" *ngFor="let prato of pratosPrincipais">
+        <img class="img-produto" [src]="getImagemUrl(prato.imagemUrl)" alt="{{ prato.nome }}">
+        <h3>{{ prato.nome }}</h3>
+        <p>R$ {{ prato.preco | currency }}</p>
+        <button class="botao_adicionar" (click)="adicionarProduto(prato)">Adicionar ao carrinho</button>
+      </div>
+    </ng-container>
+
+    <!-- Renderização de bebidas -->
+    <ng-container *ngIf="selectedTab === 'bebidas'">
+      <div class="prato" *ngFor="let prato of pratosBebidas">
+        <img class="img-produto" [src]="getImagemUrl(prato.imagemUrl)" alt="{{ prato.nome }}">
+        <h3>{{ prato.nome }}</h3>
+        <p>R$ {{ prato.preco | currency }}</p>
+        <button class="botao_adicionar" (click)="adicionarProduto(prato)">Adicionar ao carrinho</button>
+      </div>
+    </ng-container>
+
+    <!-- Renderização de sobremesas -->
+    <ng-container *ngIf="selectedTab === 'sobremesas'">
+      <div class="prato" *ngFor="let prato of pratosSobremesas">
+        <img class="img-produto" [src]="getImagemUrl(prato.imagemUrl)" alt="{{ prato.nome }}">
+        <h3>{{ prato.nome }}</h3>
+        <p>R$ {{ prato.preco | currency }}</p>
+        <button class="botao_adicionar" (click)="adicionarProduto(prato)">Adicionar ao carrinho</button>
+      </div>
+    </ng-container>
+  </div>
+
+
+
+  <div class="carrinho" (click)="irParaPedido()">
+    <img src="images/carrinho.png" alt="Carrinho de compras">
+    <span class="cart-count">{{ getQuantidadeCarrinho() }}</span>
+  </div>
+
+</div>
