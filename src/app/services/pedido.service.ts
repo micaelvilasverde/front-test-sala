@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Prato } from '../models/prato.model';
+import { Pedido } from '../models/pedido.model'; // Verifique se o modelo Pedido está importado
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +14,14 @@ export class PedidoService {
 
   constructor(private http: HttpClient  ) {}
 
-  criarPedido(pratos: Prato[]): Observable<any> {
-    const pedido = {
-      itens: pratos, // Enviar os itens selecionados no pedido
-      total: pratos.reduce((total, prato) => total + prato.preco, 0) // Calcula o total
-    };
+  criarPedido(pedido: { itens: { nome: string; quantidade: number }[]; status: string; }): Observable<any> {
     return this.http.post(this.apiUrl, pedido);
+  }
+  
+
+  listarPedidos(): Observable<Pedido[]> {
+    // Método para buscar a lista de pedidos do backend
+    return this.http.get<Pedido[]>(this.apiUrl);
   }
 
   adicionarPrato(prato: Prato): void {
@@ -33,4 +37,10 @@ export class PedidoService {
   limparPedido(): void {
     this.pratosSelecionados = [];
   }
+
+  atualizarStatus(id: number, status: string): Observable<Pedido> {
+    // Método para atualizar o status de um pedido específico
+    return this.http.put<Pedido>(`${this.apiUrl}/${id}/status`, { status });
+  }
+
 }

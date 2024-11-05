@@ -6,6 +6,7 @@ import { Prato } from '../../models/prato.model';
 import { PedidoService } from '../../services/pedido.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PratoService } from '../../services/prato.service';
+import { Pedido } from '../../models/pedido.model';
 
 @Component({
   selector: 'app-pedido',
@@ -37,9 +38,24 @@ export class PedidoComponent implements OnInit {
 
 
 
-  finalizarPedido() {
-    this.router.navigate(['/acompanhar-pedido']);
-  }
+finalizarPedido() {
+  const novoPedido = {
+    itens: this.pratos.map(prato => ({ nome: prato.nome, quantidade: 1 })), // Adapte se necessário
+    status: 'A_PREPARAR' // O status que você deseja definir
+  };
+
+  // Envie o pedido para o serviço e o backend
+    this.pedidoService.criarPedido(novoPedido).subscribe({
+        next: (pedidoCriado) => {
+            console.log('Pedido criado:', pedidoCriado);
+            this.router.navigate(['/acompanhar-pedido']); // Navegar após a criação
+        },
+        error: (err) => {
+            console.error('Erro ao criar pedido:', err);
+            // Aqui você pode exibir uma mensagem de erro para o usuário
+        }
+    });
+}
 
 
   cancelarPedido() {
