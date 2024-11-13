@@ -29,26 +29,33 @@ export class PrepararComponent implements OnInit {
 
   carregarPedidos(): void {
     this.pedidoService.listarPedidos().subscribe(
-      (response: Pedido[]) => {
-        this.pedidos = response.filter(pedido => pedido.status === 'A_PREPARAR');
-      },
-      error => {
-        console.error('Erro ao carregar pedidos:', error);
-      }
+        (response: Pedido[]) => {
+            this.pedidos = response.filter(pedido => pedido.status === 'A_PREPARAR');
+            console.log('Pedidos carregados:', this.pedidos); // Verifique os pedidos aqui
+        },
+        error => {
+            console.error('Erro ao carregar pedidos:', error);
+        }
     );
+}
+
+
+preparando(pedidoId?: number): void {
+  if (pedidoId == null) {
+      console.error('Pedido ID não pode ser nulo ou indefinido.');
+      return; // Ou trate o erro de acordo com sua lógica
   }
-  preparando(pedidoId: number): void {
-    // Atualiza o status do pedido para "PREPARANDO"
-    this.pedidoService.atualizarStatus(pedidoId, 'PREPARANDO').subscribe(
+
+  this.pedidoService.atualizarStatus(pedidoId, 'PREPARANDO').subscribe(
       response => {
-        console.log('Status atualizado para PREPARANDO:', response);
-        this.router.navigate(['/preparando']); // Redireciona para a tela de "preparando"
+          console.log('Status atualizado para PREPARANDO:', response);
+          this.router.navigate(['/preparando']); // Redireciona para a tela de "preparando"
       },
       error => {
-        console.error('Erro ao atualizar status:', error);
+          console.error('Erro ao atualizar status:', error);
       }
-    );
-  }
+  );
+}
 
 
   voltarPaginaAnterior() {

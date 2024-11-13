@@ -14,9 +14,12 @@ export class PedidoService {
 
   constructor(private http: HttpClient  ) {}
 
-  criarPedido(pedido: { itens: { nome: string; quantidade: number }[]; status: string; }): Observable<any> {
-    return this.http.post(this.apiUrl, pedido);
-  }
+  criarPedido(pedido: Pedido): Observable<Pedido> {
+    return this.http.post<Pedido>('http://localhost:8080/api/pedidos', pedido);
+}
+
+
+  
   
 
   listarPedidos(): Observable<Pedido[]> {
